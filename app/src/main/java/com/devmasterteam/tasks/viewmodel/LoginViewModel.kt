@@ -8,7 +8,7 @@ import com.devmasterteam.tasks.service.repository.PersonRepository
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val personRepository = PersonRepository()
+    private val personRepository = PersonRepository(application.applicationContext)
 
     /**
      * Faz login usando API
