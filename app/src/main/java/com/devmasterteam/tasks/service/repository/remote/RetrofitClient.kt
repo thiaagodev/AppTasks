@@ -3,6 +3,7 @@ package com.devmasterteam.tasks.service.repository.remote
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class RetrofitClient private constructor() {
     companion object {
@@ -23,6 +24,10 @@ class RetrofitClient private constructor() {
             }
 
             return INSTANCE
+        }
+
+        fun <T> getService(serviceClass: Class<T>): T {
+            return getRetrofitInstance().create(serviceClass)
         }
     }
 }
