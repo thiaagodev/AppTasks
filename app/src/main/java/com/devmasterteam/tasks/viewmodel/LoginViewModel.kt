@@ -14,11 +14,15 @@ import com.devmasterteam.tasks.service.repository.remote.RetrofitClient
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val context = application.applicationContext
     private val personRepository = PersonRepository(application.applicationContext)
     private val securityPreferences = SecurityPreferences(application.applicationContext)
+
     private val _validation = MutableLiveData<ValidationModel>()
+    private val _loggedUser = MutableLiveData<Boolean>()
 
     val login: LiveData<ValidationModel> = _validation
+    val loggedUser: LiveData<Boolean> = _loggedUser
 
 
     /**
@@ -30,8 +34,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 securityPreferences.store(TaskConstants.SHARED.PERSON_KEY, model.personKey)
                 securityPreferences.store(TaskConstants.SHARED.TOKEN_KEY, model.token)
                 securityPreferences.store(TaskConstants.SHARED.PERSON_NAME, model.name)
-
-                RetrofitClient.addHeaders(model.token, model.personKey)
 
                 _validation.value = ValidationModel()
             }
@@ -47,6 +49,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
      * Verifica se usuário está logado
      */
     fun verifyLoggedUser() {
+        val token = securityPreferences.get(TaskConstants.SHARED.TOKEN_KEY)
+        val personKey = securityPreferences.get(TaskConstants.SHARED.PERSON_KEY)
+
+        RetrofitClient.addHeaders(token, personKey)
+
+        _loggedUser.value = token != "" && personKey != ""
     }
 
 }

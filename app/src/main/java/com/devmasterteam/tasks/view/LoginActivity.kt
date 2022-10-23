@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.databinding.ActivityLoginBinding
+import com.devmasterteam.tasks.service.constants.TaskConstants
+import com.devmasterteam.tasks.service.repository.SecurityPreferences
 import com.devmasterteam.tasks.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
@@ -25,6 +27,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         // Layout
         setContentView(binding.root)
 
+        // Verificando de usuário está logado
+
         // Eventos
         binding.buttonLogin.setOnClickListener(this)
         binding.textRegister.setOnClickListener(this)
@@ -33,8 +37,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         observe()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.verifyLoggedUser()
+    }
+
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.button_login -> handleLogin()
         }
     }
@@ -45,6 +54,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(applicationContext, MainActivity::class.java))
             } else {
                 Toast.makeText(this, it.message(), Toast.LENGTH_LONG).show()
+            }
+        }
+
+        viewModel.loggedUser.observe(this) {
+            if(it) {
+                startActivity(Intent(applicationContext, MainActivity::class.java))
             }
         }
     }
