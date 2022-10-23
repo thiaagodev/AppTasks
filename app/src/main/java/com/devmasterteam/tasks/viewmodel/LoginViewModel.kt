@@ -14,7 +14,6 @@ import com.devmasterteam.tasks.service.repository.remote.RetrofitClient
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val context = application.applicationContext
     private val personRepository = PersonRepository(application.applicationContext)
     private val securityPreferences = SecurityPreferences(application.applicationContext)
 
