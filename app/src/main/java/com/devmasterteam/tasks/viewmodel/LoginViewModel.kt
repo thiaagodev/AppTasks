@@ -7,14 +7,17 @@ import androidx.lifecycle.MutableLiveData
 import com.devmasterteam.tasks.service.constants.TaskConstants
 import com.devmasterteam.tasks.service.listener.APIListener
 import com.devmasterteam.tasks.service.model.PersonModel
+import com.devmasterteam.tasks.service.model.PriorityModel
 import com.devmasterteam.tasks.service.model.ValidationModel
 import com.devmasterteam.tasks.service.repository.PersonRepository
+import com.devmasterteam.tasks.service.repository.PriorityRepository
 import com.devmasterteam.tasks.service.repository.SecurityPreferences
 import com.devmasterteam.tasks.service.repository.remote.RetrofitClient
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
     private val personRepository = PersonRepository(application.applicationContext)
+    private val priorityRepository = PriorityRepository(application.applicationContext)
     private val securityPreferences = SecurityPreferences(application.applicationContext)
 
     private val _validation = MutableLiveData<ValidationModel>()
@@ -33,6 +36,8 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 securityPreferences.store(TaskConstants.SHARED.PERSON_KEY, model.personKey)
                 securityPreferences.store(TaskConstants.SHARED.TOKEN_KEY, model.token)
                 securityPreferences.store(TaskConstants.SHARED.PERSON_NAME, model.name)
+
+                RetrofitClient.addHeaders(model.token, model.personKey)
 
                 _validation.value = ValidationModel()
             }
@@ -53,7 +58,22 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
 
         RetrofitClient.addHeaders(token, personKey)
 
-        _loggedUser.value = token != "" && personKey != ""
+        val logged = (token != "" && personKey != "")
+        _loggedUser.value = logged
+
+        if (!logged) {
+            priorityRepository.list(object: APIListener<List<PriorityModel>> {
+                override fun onSucess(model: List<PriorityModel>) {
+                    priorityRepository.save(model)
+                }
+
+                override fun onFailure(message: String) {
+                    _validation.value = ValidationModel(message)
+                }
+
+            })
+        }
+
     }
 
 }
