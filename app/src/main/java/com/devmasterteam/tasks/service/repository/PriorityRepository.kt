@@ -39,6 +39,11 @@ class PriorityRepository(private val context: Context) {
         })
     }
 
+    fun list(): List<PriorityModel> {
+        return local.list()
+    }
+
+
     fun save(priorityList: List<PriorityModel>) {
         local.clear()
         local.insert(priorityList)

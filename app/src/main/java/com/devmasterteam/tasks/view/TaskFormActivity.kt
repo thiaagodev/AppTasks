@@ -5,6 +5,7 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.lifecycle.ViewModelProvider
 import com.devmasterteam.tasks.R
@@ -28,9 +29,13 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         viewModel = ViewModelProvider(this).get(TaskFormViewModel::class.java)
         binding = ActivityTaskFormBinding.inflate(layoutInflater)
 
+        viewModel.loadPriorities()
+
         // Eventos
         binding.buttonSave.setOnClickListener(this)
         binding.buttonDate.setOnClickListener(this)
+
+        observe()
 
         // Layout
         setContentView(binding.root)
@@ -49,6 +54,14 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
         binding.buttonDate.text = dateFormat.format(calendar.time)
     }
 
+    private fun observe() {
+        viewModel.priorityList.observe(this) { it ->
+            val list = it.map { it.description }
+            val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list)
+            binding.spinnerPriority.adapter = adapter
+        }
+    }
+
     private fun handleDate() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -57,5 +70,6 @@ class TaskFormActivity : AppCompatActivity(), View.OnClickListener,
 
         DatePickerDialog(this, this, year, month, day).show()
     }
+
 
 }
