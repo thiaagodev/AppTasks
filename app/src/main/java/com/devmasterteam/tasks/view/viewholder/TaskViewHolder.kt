@@ -6,6 +6,7 @@ import com.devmasterteam.tasks.R
 import com.devmasterteam.tasks.databinding.RowTaskListBinding
 import com.devmasterteam.tasks.service.listener.TaskListener
 import com.devmasterteam.tasks.service.model.TaskModel
+import java.text.SimpleDateFormat
 
 class TaskViewHolder(private val itemBinding: RowTaskListBinding, val listener: TaskListener) :
     RecyclerView.ViewHolder(itemBinding.root) {
@@ -17,18 +18,32 @@ class TaskViewHolder(private val itemBinding: RowTaskListBinding, val listener: 
 
         itemBinding.textDescription.text = task.description
         itemBinding.textPriority.text = task.priorityId.toString()
-        itemBinding.textDueDate.text = task.dueData
+
+        val date = SimpleDateFormat("yyyy-M-dd").parse(task.dueData)
+        itemBinding.textDueDate.text = SimpleDateFormat("dd/M/yyyy").format(date)
+
+        if (task.complete) {
+            itemBinding.imageTask.setImageResource(R.drawable.ic_done)
+        } else {
+            itemBinding.imageTask.setImageResource(R.drawable.ic_todo)
+        }
 
         // Eventos
-        // itemBinding.textDescription.setOnClickListener { listener.onListClick(task.id) }
-        // itemBinding.imageTask.setOnClickListener { }
+        itemBinding.textDescription.setOnClickListener { listener.onListClick(task.id) }
+        itemBinding.imageTask.setOnClickListener {
+            if (task.complete) {
+                listener.onUndoClick(task.id)
+            } else {
+                listener.onCompleteClick(task.id)
+            }
+        }
 
         itemBinding.textDescription.setOnLongClickListener {
             AlertDialog.Builder(itemView.context)
                 .setTitle(R.string.remocao_de_tarefa)
                 .setMessage(R.string.remover_tarefa)
                 .setPositiveButton(R.string.sim) { dialog, which ->
-                    // listener.onDeleteClick(task.id)
+                    listener.onDeleteClick(task.id)
                 }
                 .setNeutralButton(R.string.cancelar, null)
                 .show()

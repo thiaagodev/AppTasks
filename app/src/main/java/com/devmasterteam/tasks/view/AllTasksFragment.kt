@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmasterteam.tasks.databinding.FragmentAllTasksBinding
+import com.devmasterteam.tasks.service.listener.TaskListener
 import com.devmasterteam.tasks.view.adapter.TaskAdapter
 import com.devmasterteam.tasks.viewmodel.TaskListViewModel
 
@@ -27,12 +28,36 @@ class AllTasksFragment : Fragment() {
         binding.recyclerAllTasks.layoutManager = LinearLayoutManager(context)
         binding.recyclerAllTasks.adapter = adapter
 
-        viewModel.list()
+        val listener = object : TaskListener {
+            override fun onListClick(id: Int) {
+
+            }
+
+            override fun onDeleteClick(id: Int) {
+
+            }
+
+            override fun onCompleteClick(id: Int) {
+
+            }
+
+            override fun onUndoClick(id: Int) {
+
+            }
+
+        }
+
+        adapter.attachListener(listener)
 
         // Cria os observadores
         observe()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.list()
     }
 
     override fun onDestroyView() {
