@@ -17,7 +17,7 @@ class TaskViewHolder(private val itemBinding: RowTaskListBinding, val listener: 
     fun bindData(task: TaskModel) {
 
         itemBinding.textDescription.text = task.description
-        itemBinding.textPriority.text = task.priorityId.toString()
+        itemBinding.textPriority.text = task.priorityDescription
 
         val date = SimpleDateFormat("yyyy-M-dd").parse(task.dueData)
         itemBinding.textDueDate.text = SimpleDateFormat("dd/M/yyyy").format(date)
