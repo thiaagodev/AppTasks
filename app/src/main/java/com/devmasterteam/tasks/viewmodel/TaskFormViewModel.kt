@@ -18,22 +18,46 @@ class TaskFormViewModel(application: Application) : AndroidViewModel(application
 
     private val _priorityList = MutableLiveData<List<PriorityModel>>()
     private val _taskSave = MutableLiveData<ValidationModel>()
+    private val _task = MutableLiveData<TaskModel>()
+    private val _taskLoad = MutableLiveData<ValidationModel>()
 
     val priorityList: LiveData<List<PriorityModel>> = _priorityList
     val taskSave: LiveData<ValidationModel> = _taskSave
+    val task: LiveData<TaskModel> = _task
+    val taskLoad: LiveData<ValidationModel> = _taskLoad
 
     fun loadPriorities() {
         _priorityList.value = priorityRepository.list()
     }
 
     fun save(task: TaskModel) {
-        taskRepository.create(task, object : APIListener<Boolean> {
+        val listener = object : APIListener<Boolean> {
             override fun onSucess(model: Boolean) {
                 _taskSave.value = ValidationModel()
             }
 
             override fun onFailure(message: String) {
                 _taskSave.value = ValidationModel(message)
+            }
+
+        }
+
+        if (task.id == 0) {
+            taskRepository.create(task, listener)
+        } else {
+            taskRepository.update(task, listener)
+        }
+
+    }
+
+    fun load(id: Int) {
+        taskRepository.load(id, object : APIListener<TaskModel> {
+            override fun onSucess(model: TaskModel) {
+                _task.value = model
+            }
+
+            override fun onFailure(message: String) {
+                _taskLoad.value = ValidationModel(message)
             }
 
         })
