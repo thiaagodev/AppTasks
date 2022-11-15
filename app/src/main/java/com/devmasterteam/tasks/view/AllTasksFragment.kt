@@ -39,11 +39,11 @@ class AllTasksFragment : Fragment() {
             }
 
             override fun onCompleteClick(id: Int) {
-
+                viewModel.status(id, true)
             }
 
             override fun onUndoClick(id: Int) {
-
+                viewModel.status(id, false)
             }
 
         }
@@ -72,6 +72,12 @@ class AllTasksFragment : Fragment() {
         }
 
         viewModel.delete.observe(viewLifecycleOwner) {
+            if (!it.status()) {
+                Toast.makeText(context, it.message(), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        viewModel.status.observe(viewLifecycleOwner) {
             if (!it.status()) {
                 Toast.makeText(context, it.message(), Toast.LENGTH_SHORT).show()
             }
