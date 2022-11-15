@@ -45,6 +45,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.button_login -> handleLogin()
+            R.id.text_register -> {
+                startActivity(
+                    Intent(
+                        applicationContext,
+                        RegisterActivity::class.java
+                    )
+                )
+            }
         }
     }
 
@@ -52,13 +60,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.login.observe(this) {
             if (it.status()) {
                 startActivity(Intent(applicationContext, MainActivity::class.java))
+                finish()
             } else {
                 Toast.makeText(this, it.message(), Toast.LENGTH_LONG).show()
             }
         }
 
         viewModel.loggedUser.observe(this) {
-            if(it) {
+            if (it) {
                 startActivity(Intent(applicationContext, MainActivity::class.java))
             }
         }
