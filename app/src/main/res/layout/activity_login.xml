@@ -4,28 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shape_background"
     android:padding="16dp"
     tools:context=".view.LoginActivity">
 
-    <EditText
-        android:id="@+id/edit_email"
-        android:layout_width="0dp"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_logo"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:autofillHints=""
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:minHeight="48dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_logotipo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:id="@+id/edit_email"
+        style="@style/DefaultTextEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_mail"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_logo" />
+
+    <EditText
         android:id="@+id/edit_password"
+        style="@style/DefaultTextEdit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:autofillHints=""
+        android:drawableStart="@drawable/ic_lock"
         android:hint="@string/senha"
         android:inputType="textPassword"
         android:minHeight="48dp"
@@ -50,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nao_tem_uma_conta"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/text_register"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -62,6 +78,7 @@
         android:layout_marginStart="8dp"
         android:layout_toEndOf="@id/text_new_account"
         android:text="@string/cadastre_se"
+        android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

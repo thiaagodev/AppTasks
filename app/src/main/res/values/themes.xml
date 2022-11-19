@@ -17,8 +17,8 @@
     <style name="Theme.Tasks.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>sa
-    
+    </style>
+
     <!-- Custom Button -->
     <style name="DefaultButton">
         <item name="android:backgroundTint">@color/pink</item>
@@ -26,6 +26,14 @@
         <item name="android:paddingEnd">64dp</item>
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="DefaultTextEdit">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableTint">@color/white</item>
     </style>
 
     <style name="Theme.Tasks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -26,6 +26,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         // Layout
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         // Verificando de usuário está logado
 
