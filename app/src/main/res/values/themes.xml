@@ -36,6 +36,11 @@
         <item name="android:drawableTint">@color/white</item>
     </style>
 
+    <style name="ViewDivider">
+        <item name="android:background">@color/grey_500</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
     <style name="Theme.Tasks.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Tasks.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
